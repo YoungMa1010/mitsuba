@@ -1,0 +1,58 @@
+朱君秋  2017/12/18
+1、在src/bsdfs文件夹下新增utils.h、sse_mathfun.h、gaussian.h、stochastic.cpp文件
+2、在src/bsdfs/SConscript文件中新增代码：plugins += env.SharedLibrary('stochastic', ['stochastic.cpp'])
+3、在src/emitters文件夹下新增texarea.cpp文件
+4、在src/emitters/SConscript文件中新增代码：plugins += env.SharedLibrary('texarea', ['texarea.cpp'])
+5、在include/mitsuba/core/warp.h文件中新增代码：extern MTS_EXPORT_CORE Float intervalToStdNormal(const Float sample);（此代码放在namespace warp {}函数体内）
+6、在src/libcore/warp.cpp文件中新增代码：（此代码放在namespace warp {}函数体内）
+Float intervalToStdNormal(const Float sample){
+	Float r = std::sqrt(-2 * math::fastlog(1 - sample)),
+		phi = 2 * M_PI * 0.5;
+	Float result;
+	result = cos(phi);
+	return result * r;
+}
+
+柴宇飞 2017/12/19
+1、在src/bsdfs文件夹下新增ctd.h、ctd_convolution.h、ctd_fresnel_R.h、ctd_G1.h、ctd_lowPass.h、ctd_renormalization.h、ctdparams.h、
+merl.h、sgd.h、sgdparams.h、smooth.h、smoothparams.h、measured.cpp、sgd.cpp、ctd.cpp、smooth.cpp文件
+2、在src/bsdfs/SConscript文件中新增代码：
+plugins += env.SharedLibrary('measured', ['measured.cpp'])
+plugins += env.SharedLibrary('sgd', ['sgd.cpp'])
+plugins += env.SharedLibrary('ctd', ['ctd.cpp'])
+plugins += env.SharedLibrary('smooth', ['smooth.cpp'])
+3、在include/mitsuba/core/spectrum.h文件中新增代码（558行）：
+ inline TSpectrum powSpec(TSpectrum spec) const {
+		TSpectrum value;
+		for (int i=0; i<N; i++)
+			value.s[i] = std::pow(s[i], spec[i]);
+		return value;
+	}
+4、在include/mitsuba/core/spectrum.h文件中新增代码（597行）：
+inline void lambdaValues() {
+#if SPECTRUM_SAMPLES == 3
+	s[0] = 0.645; s[1] = 0.526; s[2] = 0.444;	
+#else
+	// wavelengths in m_wavelengths are in nano-meters
+	// conversion to micro-meters
+		for (int i=0; i<SPECTRUM_SAMPLES; i++)
+			s[i] = 0.001 * (0.5 * (m_wavelengths[i] + m_wavelengths[i+1]));
+#endif
+}
+
+inline void lambdaValuesPower(Float p) {
+#if SPECTRUM_SAMPLES == 3
+	s[0] = std::pow(0.645, p); s[1] = std::pow(0.526, p); s[2] = std::pow(0.444, p);	
+#else
+	// wavelengths in m_wavelengths are in nano-meters
+	// conversion to micro-meters
+		for (int i=0; i<SPECTRUM_SAMPLES; i++)
+			s[i] = std::pow(0.001 * (0.5 * (m_wavelengths[i] + m_wavelengths[i+1])), p);
+#endif
+}
+
+孙彬 2017/12/19
+1、在src/bsdfs文件夹下新增btf.cpp、brdf.cpp文件
+2、在src/bsdfs/SConscript文件中新增代码：
+plugins += env.SharedLibrary('brdf', ['brdf.cpp'])
+plugins += env.SharedLibrary('btf', ['btf.cpp'])
