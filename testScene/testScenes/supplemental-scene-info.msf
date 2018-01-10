@@ -1,0 +1,53 @@
+<!-- 
+Copyright (C) 2017 INRIA  http://www.inria.fr
+Copyright (C) 2017 CNRS   http://www.cnrs.fr
+
+Authors:
+ Nicolas Holzschuch:  nicolas.holzschuch@inria.fr
+ Romain  Pacanowski:  romain.pacanowski@institutoptique.fr 
+
+ Permission to use, copy and modify this software and its documentation without
+ fee for educational, research and non-profit purposes, is hereby granted, provided
+ that the above copyright notice appear in all copies.
+ 
+ To request permission to incorporate this software into commercial products contact
+ the authors above. 
+ -->
+
+<!-- This XML File describes the scene configuration of the supplemental material
+ for the paper: 
+-->
+
+<?xml version="1.0" ?>
+
+<!-- Scene description. A simple analytical sphere surrounded by an environment map -->
+<scene>
+	 <background ref_envmap="a_envmap" type="envmap"/> 
+	 
+	 <shapes>  
+		 <sphere radius="2.0" ref_material="a_material"> 
+			 <position x="0.0" y="0.0" z="0.0"/>
+		 </sphere>
+	 </shapes> 
+
+	 <ext_resources> 
+		 <envmaps> 
+		 	<!-- You Can download the environment map here : http://dativ.at/lightprobes/ -->
+		 	<!-- Phi represents the azimuthal angle and is defined in degree ranging from 0 to 360 -->
+		 	<!-- Phi represents the zenith angle and is defined in degree ranging from 0 to 180 -->
+		 	<!-- cf. https://en.wikipedia.org/wiki/Spherical_coordinate_system#/media/File:3D_Spherical.svg -->
+			 <panoramic file="wells6_hd.hdr" name="a_envmap" phi="235" theta="180"/>
+		 </envmaps> 
+
+	 </ext_resources> 
+</scene>
+
+
+ <!-- Pinhole Camera Parameters -->
+<camera id="cam1" type="pinhole">
+   <position x="0.0"  y="7.0"  z="-8.0" /> 
+   <lookat   x="0.0"  y="0.0"  z="0.0" />
+	 <up x="0.0"  y="1."  z="0." />
+	 <!-- Field of View in Degree -->
+   <fovy value="30.0" />
+ </camera> 
